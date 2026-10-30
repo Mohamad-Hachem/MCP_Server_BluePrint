@@ -1,3 +1,4 @@
+from typing import Literal
 from uuid import uuid4
 
 from fastmcp import FastMCP
@@ -27,6 +28,16 @@ def list_tasks() -> list[dict]:
     """
     return tasks
 
+@mcp.tool(name="update_task_status", description="This tool will update a specific task status based on its ID")
+def update_task_status(task_id:str, status:Literal["todo", "in_progress", "done"]) -> dict:
+    """
+    this function will update the status of a specific task based on its ID
+    """
+    for task in tasks:
+        if task["task_id"] == task_id:
+            task["status"] = status
+            return task
+    return {"error": f"Task not found: {task_id}"}   
 
 
 if __name__ == "__main__":
