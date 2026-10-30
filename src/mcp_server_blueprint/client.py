@@ -23,7 +23,13 @@ async def get_tools_from_server():
         )
 
         print(result.data)
-        
+
+
+        result2 = await client.call_tool(
+            "list_tasks"
+        )
+        print(result2.data)
+
     return tools
 
 
