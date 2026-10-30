@@ -3,7 +3,7 @@ from uuid import uuid4
 
 from fastmcp import FastMCP
 
-from mcp_server_blueprint.database import save_task
+from mcp_server_blueprint.database import save_task, get_all_tasks
 
 mcp = FastMCP("MCP Server ACL")
 
@@ -29,7 +29,7 @@ def list_tasks() -> list[dict]:
     """
     This function return all the tasks present in our database
     """
-    return tasks
+    return get_all_tasks()
 
 @mcp.tool(name="update_task_status", description="This tool will update a specific task status based on its ID")
 def update_task_status(task_id:str, status:Literal["todo", "in_progress", "done"]) -> dict:

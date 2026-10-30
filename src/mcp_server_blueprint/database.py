@@ -1,21 +1,17 @@
 import sqlite3
 from pathlib import Path
 
+project_root = Path(__file__).resolve().parents[2]
+data_dir = project_root / "data"
+db_path = data_dir / "tasks.db"
 
 def init_db() -> None:
-    # 1. Determine the project root
-    project_root = Path(__file__).resolve().parents[2]
 
-    # 2. Create the data directory
-    data_dir = project_root / "data"
     data_dir.mkdir(parents=True, exist_ok=True)
 
-    # 3. Connect to the SQLite database
-    db_path = data_dir / "tasks.db"
     conn = sqlite3.connect(db_path)
 
     try:
-        # 4. Create the tasks table
         conn.execute("""
             CREATE TABLE IF NOT EXISTS tasks (
                 task_id TEXT PRIMARY KEY,
@@ -26,27 +22,16 @@ def init_db() -> None:
             )
         """)
 
-        # 5. Commit the changes
         conn.commit()
     finally:
-        # Close the connection even if an error occurs
         conn.close()
 
 
 def save_task(task:dict) -> None:
-    # 1. Determine the project root
-    project_root = Path(__file__).resolve().parents[2]
 
-    # 2. Create the data directory
-    data_dir = project_root / "data"
-    data_dir.mkdir(parents=True, exist_ok=True)
-
-    # 3. Connect to the SQLite database
-    db_path = data_dir / "tasks.db"
     conn = sqlite3.connect(db_path)
 
     try:
-        # 4. Create the tasks table
         conn.execute(
             """
             INSERT INTO tasks (
@@ -63,11 +48,26 @@ def save_task(task:dict) -> None:
             )
         )
 
-        # 5. Commit the changes
         conn.commit()
     finally:
-        # Close the connection even if an error occurs
         conn.close()
+
+
+def get_all_tasks() -> list[dict]:
+
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
+
+    cur = conn.cursor()
+    try:
+        
+        cur.execute('SELECT * FROM tasks;')
+        rows = cur.fetchall()
+    finally:
+        conn.close()
+
+    return [dict(row) for row in rows]
 
 if __name__ == "__main__":
     init_db()
+    print(get_all_tasks())
