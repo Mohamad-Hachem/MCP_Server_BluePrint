@@ -3,6 +3,8 @@ from uuid import uuid4
 
 from fastmcp import FastMCP
 
+from mcp_server_blueprint.database import save_task
+
 mcp = FastMCP("MCP Server ACL")
 
 tasks = []
@@ -18,6 +20,7 @@ def create_task(title:str, priority:str="medium", description:str="") -> dict:
 
     task =  {"task_id":task_id, "title":title, "description":description, "status": status, "priority": priority}
     tasks.append(task)
+    save_task(task)
 
     return task
 
