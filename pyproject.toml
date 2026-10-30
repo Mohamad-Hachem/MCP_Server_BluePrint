@@ -1,0 +1,17 @@
+[project]
+name = "mcp-server-blueprint"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Mohamad-Hachem", email = "mohamad27hachem@outlook.com" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+mcp-server-blueprint = "mcp_server_blueprint:main"
+
+[build-system]
+requires = ["uv_build>=0.12.22,<0.13.0"]
+build-backend = "uv_build"
