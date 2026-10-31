@@ -3,7 +3,7 @@ from uuid import uuid4
 
 from fastmcp import FastMCP
 
-from mcp_server_blueprint.database import save_task, get_all_tasks
+from mcp_server_blueprint.database import get_all_tasks, save_task
 
 mcp = FastMCP("MCP Server ACL")
 
