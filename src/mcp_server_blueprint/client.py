@@ -56,5 +56,10 @@ async def list_tasks_using_mcp():
     return result.data
 
 if __name__ == "__main__":
-    #asyncio.run(get_tools_from_server())
+    asyncio.run(get_tools_from_server())
     asyncio.run(list_tasks_using_mcp())
+    asyncio.run(create_task_using_mcp())
+    asyncio.run(list_tasks_using_mcp())
+    asyncio.run(update_task_status_from_mcp())
+    asyncio.run(list_tasks_using_mcp())
+    

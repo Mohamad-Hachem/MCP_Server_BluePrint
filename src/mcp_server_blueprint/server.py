@@ -3,7 +3,7 @@ from uuid import uuid4
 
 from fastmcp import FastMCP
 
-from mcp_server_blueprint.database import get_all_tasks, save_task
+from mcp_server_blueprint.database import get_all_tasks, save_task, update_task_status_in_db
 
 mcp = FastMCP("MCP Server ACL")
 
@@ -36,11 +36,13 @@ def update_task_status(task_id:str, status:Literal["todo", "in_progress", "done"
     """
     this function will update the status of a specific task based on its ID
     """
-    for task in tasks:
-        if task["task_id"] == task_id:
-            task["status"] = status
-            return task
-    return {"error": f"Task not found: {task_id}"}   
+    # the following comments left for learning purposes
+    #for task in tasks: 
+    #    if task["task_id"] == task_id:
+    #        task["status"] = status
+    #        return task
+    #return {"error": f"Task not found: {task_id}"}  
+    return update_task_status_in_db(task_id, status)
 
 
 if __name__ == "__main__":
