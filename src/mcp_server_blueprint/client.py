@@ -13,7 +13,10 @@ async def get_tools_from_server():
         for tool in tools:
             print(tool.name)
 
-        # calling tool create_task
+    return tools
+
+async def create_task_using_mcp():
+    async with client:
         result = await client.call_tool(
             "create_task",
             {
@@ -24,49 +27,34 @@ async def get_tools_from_server():
         )
 
         print(result.data)
+        
+    return result.data
 
-
-        result2 = await client.call_tool(
-            "list_tasks"
-        )
-        print(result2.data)
-
+async def update_task_status_from_mcp():
+    async with client:
         print("testing update normally")
         result = await client.call_tool(
             "update_task_status",
             {
-                "task_id": result2.data[0]["task_id"],
+                "task_id": "26f5a22e-4944-470d-9cbc-06c75a5227a1", 
                 "status": "in_progress"
             }
         )
-
         print(result.data)
-        print("testing update with wrong ID")
+
+    return result.data
+
+async def list_tasks_using_mcp():
+    async with client:
         result = await client.call_tool(
-                    "update_task_status",
-                    {
-                        "task_id": '5e6a57eb-607b-40ea-8c7c-0dd8b4558478',
-                        "status": "in_progress"
-                    }
-                )
-        
+            "list_tasks"
+        )
+
+        print("these are all the tasks:")
         print(result.data)
 
-        print("testing update with wrong status")
-        try:
-            result = await client.call_tool(
-                        "update_task_status",
-                        {
-                            "task_id": '5e6a57eb-607b-40ea-8c7c-0dd8b4558478',
-                            "status": "working"
-                        }
-                    )
-            print(result.data)
-        except ToolError as e:
-            print(f"Error: {e}")
-        
-    return tools
-
+    return result.data
 
 if __name__ == "__main__":
-    asyncio.run(get_tools_from_server())
+    #asyncio.run(get_tools_from_server())
+    asyncio.run(list_tasks_using_mcp())
