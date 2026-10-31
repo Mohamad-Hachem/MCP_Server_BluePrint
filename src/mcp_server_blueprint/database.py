@@ -68,6 +68,43 @@ def get_all_tasks() -> list[dict]:
 
     return [dict(row) for row in rows]
 
+
+def update_task_status_in_db(task_id:str, status:str) -> dict:
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
+    try:
+        conn.execute(
+            """
+            UPDATE tasks
+            SET status = ?
+            WHERE task_id = ?
+            """,
+            (status, task_id)
+        )
+        conn.commit()
+        record = conn.execute(
+            """
+            SELECT * FROM tasks
+            WHERE task_id = ?
+            """,
+            (task_id,)
+        ).fetchone()
+        
+    finally:
+        conn.close()
+    if record is None:
+        return {"error": f"the task_id {task_id} does not exist"}
+    return dict(record)
+
 if __name__ == "__main__":
-    init_db()
-    print(get_all_tasks())
+    print("TEST 1: Existing task")
+    print(update_task_status_in_db(
+        task_id="26f5a22e-4944-470d-9cbc-06c75a5227a1",
+        status="done"
+    ))
+
+    print("TEST 2: Nonexistent task")
+    print(update_task_status_in_db(
+        task_id="26f5a22e-4944-470d-9cbc-06c75a5227a2",
+        status="done"
+    ))
